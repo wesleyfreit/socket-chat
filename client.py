@@ -15,13 +15,34 @@ class Client:
             try:
                 message = client.recv(1024).decode("utf-8")
                 if message:
-                    print(message)
+                    self.display_message(message)
                 else:
                     break
             except:
-                print("Connection lost!")
                 client.close()
                 break
+
+    def display_message(self, message):
+        # Here can be used to change the displayed message format
+        match message.split(" ")[0]:
+            case "!users":
+                # _, users_count, users = message.split(" ", 2)
+                # print(f"Users online: {users_count} - {users.replace(' ', ', ')}")
+                print(message)
+            case "!msg":
+                # _, sender, msg_content = message.split(" ", 2)
+                # print(f"{sender}: {msg_content}")
+                print(message)
+            case "!changenickname":
+                # _, old_nick, new_nick = message.split(" ", 2)
+                # print(f"{old_nick} changed nickname to {new_nick}")
+                print(message)
+            case "!poke":
+                # _, poker_nick, target_nick = message.split(" ", 2)
+                # print(f"{poker_nick} poked {target_nick}")
+                print(message)
+            case _:
+                print(message)
 
     def connect(self):
         nickname = input("Choose your nickname: ")

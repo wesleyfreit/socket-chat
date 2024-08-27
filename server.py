@@ -54,7 +54,7 @@ class Server:
                         )
                     case "!changenickname":
                         old_nick = nicknames[client]
-                        new_nick = message.split(" ")[1]
+                        new_nick = message.split(" ")[2]
                         self.change_nickname(client, old_nick, new_nick)
                     case "!poke":
                         target_nick = message.split(" ")[1]
