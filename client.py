@@ -23,8 +23,11 @@ class Client:
             message = client.recv(1024).decode("utf-8")
             if message == "!nick":
                 nickname = input(f"{message} ")
+
                 self.client.send(f"!nick {nickname}".encode("utf-8"))
-                self.nickname = nickname
+                
+                if nickname.strip():
+                    self.nickname = nickname
             elif message.split(" ")[0] == "!exit":
                 self.display_message(message)
                 self.running = False
