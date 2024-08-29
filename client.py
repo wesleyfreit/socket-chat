@@ -20,20 +20,24 @@ class Client:
 
     def receive_messages(self, client):
         while self.running:
-            message = client.recv(1024).decode("utf-8")
-            if message == "!nick":
-                nickname = input(f"{message} ")
+            try:
+                message = client.recv(1024).decode("utf-8")
+                if message == "!nick":
+                    nickname = input(f"{message} ")
 
-                self.client.send(f"!nick {nickname}".encode("utf-8"))
-                
-                if nickname.strip():
-                    self.nickname = nickname
-            elif message.split(" ")[0] == "!exit":
-                self.display_message(message)
+                    self.client.send(f"!nick {nickname}".encode("utf-8"))
+
+                    if nickname.strip():
+                        self.nickname = nickname
+                elif message.split(" ")[0] == "!exit":
+                    self.display_message(message)
+                    self.running = False
+                    break
+                elif message:
+                    self.display_message(message)
+            except (EOFError, ConnectionAbortedError):
                 self.running = False
                 break
-            elif message:
-                self.display_message(message)
 
     def connect(self):
         try:

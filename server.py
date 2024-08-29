@@ -115,7 +115,7 @@ class Server:
                         self.poke_user(client, target_nick)
                     case _:
                         client.send("!cmd invalid command".encode("utf-8"))
-            except ConnectionResetError:
+            except (ConnectionResetError, ConnectionAbortedError):
                 self.remove_client(client)
                 break
 
@@ -132,17 +132,13 @@ class Server:
         print("Server is listening...")
 
         while True:
-            try:
-                client, address = self.server.accept()
-                print(f"Connected with {str(address)}")
+            client, address = self.server.accept()
+            print(f"Connected with {str(address)}")
 
-                client.send("!nick".encode("utf-8"))
+            client.send("!nick".encode("utf-8"))
 
-                thread = threading.Thread(target=self.handle_client, args=(client,))
-                thread.start()
-            except:
-                print("An error occurred, server closed!")
-                self.server.close()
+            thread = threading.Thread(target=self.handle_client, args=(client,))
+            thread.start()
 
 
 if __name__ == "__main__":
